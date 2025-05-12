@@ -94,7 +94,7 @@ public class Carta {
 
     @Override
     public String toString() {
-        return "id=" + id + ", nome=" + nome + ", raridade=" + raridade;
+        return nome +"("+ categoria+"): A: "+ataque+" - D: " + defesa;
     }
     
     

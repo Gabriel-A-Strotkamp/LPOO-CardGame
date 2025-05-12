@@ -7,13 +7,16 @@ package br.edu.seuprojeto.view;
 import br.edu.seuprojeto.model.Carta;
 import br.edu.seuprojeto.control.PersistenciaJPA;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 20221PF.CC0008
  */
 public class CartaJF extends javax.swing.JFrame {
+
     PersistenciaJPA jpa;
-    
+
     /**
      * Creates new form CartaJF
      */
@@ -23,16 +26,17 @@ public class CartaJF extends javax.swing.JFrame {
         loadCards();
     }
 
-    public void loadCards(){
+    public void loadCards() {
         DefaultListModel model = new DefaultListModel();
         model.removeAllElements();
-        
-        for(Carta c: jpa.getCartas()){
+
+        for (Carta c : jpa.getCartas()) {
             model.addElement(c);
         }
-        
+
         lstCartas.setModel(model);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -56,6 +60,11 @@ public class CartaJF extends javax.swing.JFrame {
         jScrollPane1.setViewportView(lstCartas);
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -65,6 +74,11 @@ public class CartaJF extends javax.swing.JFrame {
         });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,6 +119,48 @@ public class CartaJF extends javax.swing.JFrame {
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        CadastroCartaJD telaCadastro = new CadastroCartaJD(this, true);
+        telaCadastro.setVisible(true);
+        Carta novaCarta = telaCadastro.getCarta();
+
+        if (!jpa.conexaoAberta()) {
+            jpa = new PersistenciaJPA();
+        }
+        try {
+            jpa.persist(novaCarta);
+        } catch (Exception ex) {
+            System.err.println("ERRO AO PERSISTIR NOVA CARTA: " + ex);
+        }
+        loadCards();
+
+
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        Carta cartaSel = lstCartas.getSelectedValue();
+        if (cartaSel == null) {
+            JOptionPane.showMessageDialog(null, "Selecione uma carta para remover!! ");
+        } else {
+            int opDel = JOptionPane.showConfirmDialog(rootPane,
+                    "Tem Certeza que deseja remover a carta: " + cartaSel + "?");
+            if (opDel == JOptionPane.YES_OPTION) {
+                if (!jpa.conexaoAberta()) {
+                    jpa = new PersistenciaJPA();
+                }
+                try {
+                    jpa.remover(cartaSel);
+                } catch (Exception ex) {
+                    System.err.println("ERRO AO PERSISTIR NOVA CARTA: " + ex);
+                }
+                loadCards();
+            }
+
+        }
+        
+
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     /**
      * @param args the command line arguments
