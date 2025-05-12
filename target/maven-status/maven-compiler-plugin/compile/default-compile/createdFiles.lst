@@ -1,0 +1,13 @@
+br\edu\seuprojeto\control\PersistenciaJPA.class
+br\edu\seuprojeto\view\CartaJF.class
+br\edu\seuprojeto\view\PrincipalJF$2.class
+br\edu\seuprojeto\control\InterfaceBD.class
+br\edu\seuprojeto\model\Categoria.class
+br\edu\seuprojeto\lpoo\cardgame\LPOOCardGame.class
+br\edu\seuprojeto\view\CartaJF$1.class
+br\edu\seuprojeto\view\PrincipalJF.class
+br\edu\seuprojeto\model\Jogador.class
+br\edu\seuprojeto\model\Carta.class
+br\edu\seuprojeto\model\Carta_.class
+br\edu\seuprojeto\view\CartaJF$2.class
+br\edu\seuprojeto\view\PrincipalJF$1.class
