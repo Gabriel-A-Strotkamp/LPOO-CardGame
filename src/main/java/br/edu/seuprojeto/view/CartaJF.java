@@ -117,7 +117,26 @@ public class CartaJF extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
+        Carta cartaSel = lstCartas.getSelectedValue();
+        if (cartaSel == null) {
+            JOptionPane.showMessageDialog(null, "Selecione uma carta para Editar!! ");
+        } else {
+                if (!jpa.conexaoAberta()) {
+                    jpa = new PersistenciaJPA();
+                }
+                try {
+                    CadastroCartaJD telaCadastro = new CadastroCartaJD(this, true);
+                    telaCadastro.setCarta(cartaSel);
+                    telaCadastro.setVisible(true);
+                    jpa.persist(cartaSel);
+                    
+                } catch (Exception ex) {
+                    System.err.println("ERRO AO PERSISTIR EDITAR CARTA: " + ex);
+                }
+                loadCards();
+
+        }
+        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
@@ -131,7 +150,7 @@ public class CartaJF extends javax.swing.JFrame {
         try {
             jpa.persist(novaCarta);
         } catch (Exception ex) {
-            System.err.println("ERRO AO PERSISTIR NOVA CARTA: " + ex);
+            System.err.println("ERRO AO PERSISTIR REMOVER A CARTA: " + ex);
         }
         loadCards();
 

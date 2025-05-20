@@ -19,6 +19,13 @@ public class CadastroCartaJD extends javax.swing.JDialog {
     }
 
     public void setCarta(Carta carta) {
+        
+        
+        txtNome.setText(carta.getNome());
+        txtAtaque.setText(""+carta.getAtaque());
+        txtDefesa.setText(""+carta.getDefesa());
+        cmbCategoria.setSelectedItem(carta.getCategoria());
+        
         this.carta = carta;
     }
     
@@ -181,7 +188,13 @@ public class CadastroCartaJD extends javax.swing.JDialog {
             carta.setAtaque(Integer.parseInt(txtAtaque.getText()));
             carta.setDefesa(Integer.parseInt(txtDefesa.getText()));
             
+        }else{
+            carta.setNome(txtNome.getText().trim());
+            carta.setCategoria((Categoria)cmbCategoria.getSelectedItem());
+            carta.setAtaque(Integer.parseInt(txtAtaque.getText()));
+            carta.setDefesa(Integer.parseInt(txtDefesa.getText()));
         }
+        
         
         dispose();
     }//GEN-LAST:event_btnSalvarActionPerformed
