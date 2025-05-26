@@ -29,12 +29,18 @@ public class PrincipalJF extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuCadastro = new javax.swing.JMenu();
         miCarta = new javax.swing.JMenuItem();
+        miJogador = new javax.swing.JMenuItem();
         menuJogo = new javax.swing.JMenu();
         menuAjuda = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         menuCadastro.setText("Cadastro");
+        menuCadastro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCadastroActionPerformed(evt);
+            }
+        });
 
         miCarta.setText("Carta");
         miCarta.addActionListener(new java.awt.event.ActionListener() {
@@ -43,6 +49,14 @@ public class PrincipalJF extends javax.swing.JFrame {
             }
         });
         menuCadastro.add(miCarta);
+
+        miJogador.setText("Jogador");
+        miJogador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miJogadorActionPerformed(evt);
+            }
+        });
+        menuCadastro.add(miJogador);
 
         jMenuBar1.add(menuCadastro);
 
@@ -73,6 +87,16 @@ public class PrincipalJF extends javax.swing.JFrame {
             CartaJF telaCartas = new CartaJF();
             telaCartas.setVisible(true);
     }//GEN-LAST:event_miCartaActionPerformed
+
+    private void menuCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCadastroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuCadastroActionPerformed
+
+    private void miJogadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miJogadorActionPerformed
+        // TODO add your handling code here:
+        JogadorJF telaJogador = new JogadorJF();
+        telaJogador.setVisible(true);
+    }//GEN-LAST:event_miJogadorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -115,5 +139,6 @@ public class PrincipalJF extends javax.swing.JFrame {
     private javax.swing.JMenu menuCadastro;
     private javax.swing.JMenu menuJogo;
     private javax.swing.JMenuItem miCarta;
+    private javax.swing.JMenuItem miJogador;
     // End of variables declaration//GEN-END:variables
 }

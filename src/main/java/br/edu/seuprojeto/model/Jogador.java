@@ -4,19 +4,41 @@
  */
 package br.edu.seuprojeto.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
 
 /**
  *
  * @author Jennifer Ebertz
  */
-public class Jogador {
+@Entity
+@Table(name = "tbl_jogador")
+public class Jogador implements Serializable{
+    
+    @Id
+    @SequenceGenerator(name = "seq_jog", sequenceName = "seq_jog_id", allocationSize = 1)
+    @GeneratedValue(generator = "seq_jog", strategy = GenerationType.SEQUENCE)
+    @Column(name = "jog_id")
     private int id;
+    
+    @Column(name = "nickname", nullable=false, length = 100)
     private String nickname;
+    
+    @Column(name = "level", nullable=false)
     private int levelJogador;
+    
+    @ManyToMany
+    @JoinTable(
+           name = "tbl_baralho_jogador",
+           joinColumns = @JoinColumn(name = "jogador"),
+           inverseJoinColumns = @JoinColumn(name = "carta")
+            )
     private List<Carta> baralho;
 
     public Jogador() {
+        baralho = new ArrayList<>();
     }
 
     public int getId() {

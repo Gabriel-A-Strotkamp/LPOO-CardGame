@@ -5,6 +5,7 @@
 package br.edu.seuprojeto.control;
 
 import br.edu.seuprojeto.model.Carta;
+import br.edu.seuprojeto.model.Jogador;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,4 +95,15 @@ public class PersistenciaJPA implements InterfaceBD {
             return null;
         }
     }
+    public List<Jogador> getJogadores() {
+        entity = getEntityManager();
+        try {
+            TypedQuery<Jogador> query = entity.createQuery("SELECT c FROM Jogador j", Jogador.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            Logger.getLogger(PersistenciaJPA.class.getName()).log(Level.SEVERE, "Erro ao buscar Jogador", e);
+            return null;
+        }
+    }
+    
 }

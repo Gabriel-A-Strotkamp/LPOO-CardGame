@@ -4,6 +4,9 @@
  */
 package br.edu.seuprojeto.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,8 +14,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.hibernate.annotations.ManyToAny;
 
 /**
  *
@@ -20,19 +25,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tbl_carta")
-public class Carta {
+public class Carta implements Serializable{
     @Id
     @SequenceGenerator(name = "seq_car", sequenceName = "seq_car_id", allocationSize = 1)
     @GeneratedValue(generator = "seq_car", strategy = GenerationType.SEQUENCE)
+    @Column(name = "car_id")
     private int id;
     
     @Column(name = "car_nome",nullable=false, length = 100)
     private String nome;
     
-    @Column(name = "car_ataque",nullable=false, length = 100)
+    @Column(name = "car_ataque",nullable=false)
     private int ataque;
     
-    @Column(name = "car_defesa",nullable=false, length = 100)
+    @Column(name = "car_defesa",nullable=false)
     private int defesa;
      
     @Enumerated( EnumType.STRING)
@@ -40,10 +46,23 @@ public class Carta {
     
     @Column(name = "car_raridade", nullable=true)
     private int raridade;
+    
+    @ManyToMany(mappedBy = "baralho")
+    private List<Jogador> listaJogador;
 
     public Carta() {
+        listaJogador = new ArrayList<>();
     }
 
+    public List<Jogador> getListaJogador() {
+        return listaJogador;
+    }
+
+    public void setListaJogador(List<Jogador> listaJogador) {
+        this.listaJogador = listaJogador;
+    }
+
+    
     public int getId() {
         return id;
     }
@@ -94,7 +113,7 @@ public class Carta {
 
     @Override
     public String toString() {
-        return nome +"("+ categoria+"): A: "+ataque+" - D: " + defesa;
+        return "id: "+id+ " | "+ nome +"("+ categoria+"): A: "+ataque+" - D: " + defesa;
     }
     
     

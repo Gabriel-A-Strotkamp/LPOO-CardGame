@@ -9,5 +9,5 @@ package br.edu.seuprojeto.model;
  * @author Jennifer Ebertz
  */
 public enum Categoria {
-    MONSTRO, MAGIA, ARMADURA;
+    MONSTRO, MAGIA, ARMADURA, ARMA;
 }
