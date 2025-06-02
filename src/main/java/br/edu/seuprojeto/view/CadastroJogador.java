@@ -7,6 +7,7 @@ package br.edu.seuprojeto.view;
 import br.edu.seuprojeto.control.PersistenciaJPA;
 import br.edu.seuprojeto.model.Carta;
 import br.edu.seuprojeto.model.Jogador;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -68,6 +69,11 @@ public class CadastroJogador extends javax.swing.JDialog {
         });
 
         btnRemoverCarta.setText("-");
+        btnRemoverCarta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverCartaActionPerformed(evt);
+            }
+        });
 
         lblNivel.setText("Nível:");
 
@@ -161,13 +167,30 @@ public class CadastroJogador extends javax.swing.JDialog {
         }
         Object[] cartasCadastradas = jpa.getCartas().toArray();
         
-        JOptionPane.showInputDialog(this, "Selecione uma carta: ", "Cartas Cadastradas", 0, null, cartasCadastradas, cartasCadastradas[0]);
+        Carta cartaSel = (Carta) JOptionPane.showInputDialog(this, "Selecione uma carta: ",
+                "Cartas Cadastradas", 0, null, cartasCadastradas, cartasCadastradas[0]);
         
+        if(jogador == null)
+            jogador = new Jogador();
+            jogador.addCartas(cartaSel);
+            
+            
     }//GEN-LAST:event_btnAddCartaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnRemoverCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverCartaActionPerformed
+        // TODO add your handling code here:
+        Carta cartaSel = lstCartas.getSelectedValue();
+        
+        if(cartaSel != null){
+            jogador.removeCarta(cartaSel);
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma carta!");
+        }
+    }//GEN-LAST:event_btnRemoverCartaActionPerformed
 
     /**
      * @param args the command line arguments

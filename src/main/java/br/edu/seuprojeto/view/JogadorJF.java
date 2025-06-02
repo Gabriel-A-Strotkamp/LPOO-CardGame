@@ -56,6 +56,11 @@ public class JogadorJF extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblJogadores);
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
 
@@ -96,6 +101,22 @@ public class JogadorJF extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+            CadastroJogador telaCadastro = new CadastroJogador(this, true);
+            telaCadastro.setVisible(true);
+            if(jpa == null){
+                jpa = new PersistenciaJPA();
+            }
+            Jogador novoJogador = telaCadastro.getJogador();
+            
+        }catch{
+            
+        }
+    }//GEN-LAST:event_btnNovoActionPerformed
 
     /**
      * @param args the command line arguments

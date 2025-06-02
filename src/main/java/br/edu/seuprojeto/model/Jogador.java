@@ -69,9 +69,16 @@ public class Jogador implements Serializable{
         return baralho;
     }
 
-    public void setBaralho(List<Carta> baralho) {
-        this.baralho = baralho;
+    public void addCartas(Carta c){
+        baralho.add(c);
     }
-    
+
+    public void removeCarta(Carta c){
+        baralho.remove(c);
+    }
+    @Override
+    public String toString() {
+        return nickname;
+    }
     
 }
