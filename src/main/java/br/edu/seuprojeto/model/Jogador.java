@@ -29,7 +29,7 @@ public class Jogador implements Serializable{
     @Column(name = "level", nullable=false)
     private int levelJogador;
     
-    @ManyToMany
+    @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(
            name = "tbl_baralho_jogador",
            joinColumns = @JoinColumn(name = "jogador"),

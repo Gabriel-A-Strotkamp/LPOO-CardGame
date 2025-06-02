@@ -98,10 +98,10 @@ public class PersistenciaJPA implements InterfaceBD {
     public List<Jogador> getJogadores() {
         entity = getEntityManager();
         try {
-            TypedQuery<Jogador> query = entity.createQuery("SELECT c FROM Jogador j", Jogador.class);
+            TypedQuery<Jogador> query = entity.createQuery("SELECT c FROM Jogador c", Jogador.class);
             return query.getResultList();
         } catch (Exception e) {
-            Logger.getLogger(PersistenciaJPA.class.getName()).log(Level.SEVERE, "Erro ao buscar Jogador", e);
+            Logger.getLogger(PersistenciaJPA.class.getName()).log(Level.SEVERE, "Erro ao buscar Jogadores", e);
             return null;
         }
     }
