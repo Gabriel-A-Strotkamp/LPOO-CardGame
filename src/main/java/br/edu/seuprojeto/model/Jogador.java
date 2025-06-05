@@ -69,7 +69,7 @@ public class Jogador implements Serializable{
         return baralho;
     }
 
-    public void addCartas(Carta c){
+    public void addCarta(Carta c){
         baralho.add(c);
     }
 

@@ -6,6 +6,7 @@ package br.edu.seuprojeto.view;
 
 import br.edu.seuprojeto.control.PersistenciaJPA;
 import br.edu.seuprojeto.model.Jogador;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,7 +39,7 @@ public class JogadorJF extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Cadastro Jogadores");
 
@@ -63,8 +64,18 @@ public class JogadorJF extends javax.swing.JFrame {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,18 +116,84 @@ public class JogadorJF extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
         
-        try{
+        try {
             CadastroJogador telaCadastro = new CadastroJogador(this, true);
             telaCadastro.setVisible(true);
-            if(jpa == null){
-                jpa = new PersistenciaJPA();
-            }
             Jogador novoJogador = telaCadastro.getJogador();
-            
-        }catch{
-            
+            if (novoJogador != null) {
+                if (jpa == null) {
+                    jpa = new PersistenciaJPA();
+                }
+
+                jpa.persist(novoJogador);
+
+                carregarJogadores();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao cadastrar Jogador: \n" + ex);
+
         }
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int linha = tblJogadores.getSelectedRow();
+
+        if (linha != -1) {
+            Jogador jogSel
+                    = (Jogador) tblJogadores.getModel().getValueAt(linha, 0);
+            if (jpa == null) {
+                jpa = new PersistenciaJPA();
+            }
+            CadastroJogador telaCadastro = new CadastroJogador(this, true);
+            telaCadastro.setJogador(jogSel);
+            telaCadastro.setVisible(true);
+
+            try {
+                jpa.getEntityManager().merge(jogSel);
+//                jpa.getEntityManager().getTransaction().commit();
+
+                carregarJogadores();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao editar Jogador");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um jogado");
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        // TODO add your handling code here:
+        int linha = tblJogadores.getSelectedRow();
+
+        if (linha != -1) {
+            Jogador jogSel
+                    = (Jogador) tblJogadores.getModel().getValueAt(linha, 0);
+            if (jpa == null) {
+                jpa = new PersistenciaJPA();
+            }
+            int opRem = JOptionPane.showConfirmDialog(null,
+                    "Tem certeza que deseja remover: " + jogSel + "?");
+            if (opRem == JOptionPane.YES_OPTION) {
+                try {
+                    jpa.remover(jogSel);
+                    JOptionPane.showMessageDialog(null,
+                            "Jogador removido com sucesso");
+                    carregarJogadores();
+
+                } catch (Exception ex) {
+
+                    JOptionPane.showMessageDialog(null,
+                            "Erro ao remover Jogador: " + ex);
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um jogado");
+        }
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,17 +236,15 @@ public class JogadorJF extends javax.swing.JFrame {
         modeloTbl.addColumn("Nickname");
         modeloTbl.addColumn("Level");
         modeloTbl.addColumn("Qnt. Cartas");
-        
-        if(jpa == null){
+
+        if (jpa == null) {
             jpa = new PersistenciaJPA();
         }
-        for(Jogador j: jpa.getJogadores()){
-            modeloTbl.addRow(new Object[]{j, j.getLevelJogador(), 0});
+        for (Jogador j : jpa.getJogadores()) {
+            modeloTbl.addRow(new Object[]{j, j.getLevelJogador(), j.getBaralho().size()});
         }
-        
-        tblJogadores.setModel(modeloTbl);
-        
-        
+
+        tblJogadores.setModel(modeloTbl); 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditar;

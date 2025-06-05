@@ -8,6 +8,7 @@ import br.edu.seuprojeto.control.PersistenciaJPA;
 import br.edu.seuprojeto.model.Carta;
 import br.edu.seuprojeto.model.Jogador;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,7 +39,7 @@ public class CadastroJogador extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        txtNickname = new javax.swing.JTextPane();
         lblCartas = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstCartas = new javax.swing.JList<>();
@@ -55,7 +56,7 @@ public class CadastroJogador extends javax.swing.JDialog {
 
         lblNome.setText("Nickname:");
 
-        txtNome.setViewportView(jTextPane1);
+        txtNome.setViewportView(txtNickname);
 
         lblCartas.setText("Cartas:");
 
@@ -80,6 +81,11 @@ public class CadastroJogador extends javax.swing.JDialog {
         lblValorNivel.setText("1");
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -163,35 +169,62 @@ public class CadastroJogador extends javax.swing.JDialog {
     private void btnAddCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCartaActionPerformed
         if(jpa == null){
             jpa = new PersistenciaJPA();
-            
         }
         Object[] cartasCadastradas = jpa.getCartas().toArray();
         
-        Carta cartaSel = (Carta) JOptionPane.showInputDialog(this, "Selecione uma carta: ",
-                "Cartas Cadastradas", 0, null, cartasCadastradas, cartasCadastradas[0]);
-        
+        Carta cartaSel = (Carta) JOptionPane.showInputDialog(this, 
+                "Selecione uma carta:", 
+                "Cartas Cadastradas", 
+                JOptionPane.QUESTION_MESSAGE,
+                null, 
+                cartasCadastradas,  
+                cartasCadastradas[0]);
+
         if(jogador == null)
             jogador = new Jogador();
-            jogador.addCartas(cartaSel);
-            
-            
+        
+        jogador.addCarta(cartaSel);
+        carregarCartas();
     }//GEN-LAST:event_btnAddCartaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
+         dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRemoverCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverCartaActionPerformed
         // TODO add your handling code here:
         Carta cartaSel = lstCartas.getSelectedValue();
-        
         if(cartaSel != null){
+                
             jogador.removeCarta(cartaSel);
-        }else{
-            JOptionPane.showMessageDialog(null, "Selecione uma carta!");
+            carregarCartas();
+            
+        } else{
+            JOptionPane.showMessageDialog(null, "Selecione uma carta");
         }
+           
     }//GEN-LAST:event_btnRemoverCartaActionPerformed
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        // TODO add your handling code here:
+        if(jogador == null)
+            jogador = new Jogador();
+        
+        jogador.setNickname(txtNickname.getText());
+        jogador.setLevelJogador(Integer.parseInt(lblValorNivel.getText()));
+       
+        dispose();
+    }//GEN-LAST:event_btnSalvarActionPerformed
+    public void carregarCartas(){
+        DefaultListModel modeloLista = new DefaultListModel();
+        modeloLista.removeAllElements();
+        for(Carta c: jogador.getBaralho()){
+            modeloLista.addElement(c);
+        }
+        lstCartas.setModel(modeloLista);
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -241,12 +274,22 @@ public class CadastroJogador extends javax.swing.JDialog {
     private javax.swing.JButton btnSalvar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel lblCartas;
     private javax.swing.JLabel lblNivel;
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblValorNivel;
     private javax.swing.JList<Carta> lstCartas;
+    private javax.swing.JTextPane txtNickname;
     private javax.swing.JScrollPane txtNome;
     // End of variables declaration//GEN-END:variables
+public Jogador getJogador() {
+        return jogador;
+    }
+
+    public void setJogador(Jogador jogador) {
+        this.jogador = jogador;
+        txtNickname.setText(jogador.getNickname());
+        lblValorNivel.setText(""+jogador.getLevelJogador());
+        carregarCartas();
+    }
 }
